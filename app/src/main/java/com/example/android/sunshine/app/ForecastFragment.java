@@ -1,9 +1,11 @@
 package com.example.android.sunshine.app;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.text.format.Time;
 import android.util.Log;
@@ -30,7 +32,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -50,10 +51,10 @@ public class ForecastFragment extends Fragment {
         setHasOptionsMenu(true);
 
 
-        String[] forecastArray = {"Domingo - Ensolarado - 30", "Segunda - Nublado - 20",
-                "Terca - Ensolarado - 29", "Quarta - Nublado", "Quinta - Chuva", "Sexta - Ensolarado", "Sabado - Ensolarado"};
-
-        ArrayList<String> weekForecast = new ArrayList(Arrays.asList(forecastArray));
+//        String[] forecastArray = {"Domingo - Ensolarado - 30", "Segunda - Nublado - 20",
+//                "Terca - Ensolarado - 29", "Quarta - Nublado", "Quinta - Chuva", "Sexta - Ensolarado", "Sabado - Ensolarado"};
+//
+//        ArrayList<String> weekForecast = new ArrayList(Arrays.asList(forecastArray));
 
         list_adapter =
                 new ArrayAdapter<>(
@@ -63,7 +64,7 @@ public class ForecastFragment extends Fragment {
                         R.layout.list_item_forecast,
                         //ID do text view que sera populado
                         R.id.list_item_forecast_text_view,
-                        weekForecast);
+                        new ArrayList<String>());
 
         final ListView listView;
         listView = (ListView) rootView.findViewById(R.id.list_view_forecast);
@@ -108,16 +109,26 @@ public class ForecastFragment extends Fragment {
 
         }
         if (id == R.id.action_refresh) {
-            Toast.makeText(getActivity(), "Refresh", Toast.LENGTH_SHORT).show();
-
-            String postcode = "5555";
-            FetchWeatherTask task = new FetchWeatherTask();
-            task.execute(postcode);
-
+//            Toast.makeText(getActivity(), "Refresh", Toast.LENGTH_SHORT).show();
+            updateWeather();
 
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        updateWeather();
+    }
+
+    private void updateWeather() {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String postcode = pref.getString(getString(R.string.pref_location_key),
+                getString(R.string.pref_location_default));
+        FetchWeatherTask task = new FetchWeatherTask();
+        task.execute(postcode);
     }
 
 
