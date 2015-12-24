@@ -125,10 +125,12 @@ public class ForecastFragment extends Fragment {
 
     private void updateWeather() {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String postcode = pref.getString(getString(R.string.pref_location_key),
-                getString(R.string.pref_location_default));
+
+        String postcode = pref.getString(getString(R.string.pref_location_key), getString(R.string.pref_location_default));
+        String unit = pref.getString(getString(R.string.pref_units_key), getString(R.string.pref_units_default));
+
         FetchWeatherTask task = new FetchWeatherTask();
-        task.execute(postcode);
+        task.execute(postcode, unit);
     }
 
 
@@ -137,7 +139,7 @@ public class ForecastFragment extends Fragment {
         private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
         private final String API_KEY = "70372162cce18ce61d5db22fcbbbd4ff";
         private String format = "json";
-        private String unit = "metric";
+//        private String unit = "metric";
         private Integer days = 7;
 
 
@@ -149,6 +151,7 @@ public class ForecastFragment extends Fragment {
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
             String postcode = params[0];
+            String unit = params[1];
             final String QUERY_PARAM = "q";
             final String FORMAT_PARAM = "mode";
             final String UNITS_PARAM = "units";

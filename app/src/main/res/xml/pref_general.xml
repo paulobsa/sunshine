@@ -10,4 +10,17 @@
         android:inputType="text"
         android:singleLine="true"></EditTextPreference>
 
+    <ListPreference
+        android:title="@string/pref_units"
+        android:summary="@string/pref_units_summary"
+        android:key="@string/pref_units_key"
+        android:defaultValue="@string/pref_units_default"
+        android:dialogTitle="@string/pref_units"
+        android:entries="@array/pref_units_entry_array"
+        android:entryValues="@array/pref_units_entryValues_array"
+
+        >
+
+    </ListPreference>
+
 </PreferenceScreen>
