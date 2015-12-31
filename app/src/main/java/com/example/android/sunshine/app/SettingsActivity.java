@@ -1,10 +1,12 @@
 package com.example.android.sunshine.app;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings.
@@ -26,7 +28,22 @@ public class SettingsActivity extends PreferenceActivity
         // For all preferences, attach an OnPreferenceChangeListener so the UI summary can be
         // updated when the preference changes.
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_location_key)));
-        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_units_default)));
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_units_key)));
+
+        Preference btnMap = findPreference(getString(R.string.pref_btn_key));
+        btnMap.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                SharedPreferences sharedPrefs =
+                        PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                String unitType = sharedPrefs.getString(
+                        getString(R.string.pref_units_key),
+                        getString(R.string.pref_units_metric));
+
+                Log.v(unitType, "ok");
+                return true;
+            }
+        });
 
     }
 
