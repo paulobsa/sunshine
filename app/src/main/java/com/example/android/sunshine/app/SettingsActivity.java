@@ -1,12 +1,13 @@
 package com.example.android.sunshine.app;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings.
@@ -34,16 +35,28 @@ public class SettingsActivity extends PreferenceActivity
         btnMap.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                SharedPreferences sharedPrefs =
-                        PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                String unitType = sharedPrefs.getString(
-                        getString(R.string.pref_units_key),
-                        getString(R.string.pref_units_metric));
-
-                Log.v(unitType, "ok");
+                launchMap();
                 return true;
             }
         });
+
+    }
+
+    private void launchMap() {
+        SharedPreferences sharedPrefs =
+                PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String location = sharedPrefs.getString(
+                getString(R.string.pref_location_key),
+                getString(R.string.pref_location_default));
+        String url = "geo:0,0?q=" + location;
+
+        Uri geoLocation = Uri.parse(url);
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(geoLocation);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
 
     }
 
