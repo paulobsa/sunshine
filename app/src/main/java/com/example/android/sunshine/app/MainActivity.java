@@ -1,9 +1,14 @@
 package com.example.android.sunshine.app;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -33,13 +38,38 @@ public class MainActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
+        if (id == R.id.action_map) {
+            launchMap();
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
+
+
+    private void launchMap() {
+        SharedPreferences sharedPrefs =
+                PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String location = sharedPrefs.getString(
+                getString(R.string.pref_location_key),
+                getString(R.string.pref_location_default));
+        String url = "geo:0,0?q=" + location;
+
+//        Uri geoLocation = Uri.parse(url);
+        Uri geoLocation = Uri.parse("geo:0,0?q=").buildUpon()
+                            .appendQueryParameter("q", location).build();
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(geoLocation);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }else{
+            Toast.makeText(getApplicationContext(), R.string.msg_validacao_app_map, Toast.LENGTH_SHORT).show();
+
+        }
+
+    }
+
 
 
 }

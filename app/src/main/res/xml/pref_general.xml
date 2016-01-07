@@ -21,9 +21,5 @@
         android:entryValues="@array/pref_units_values">
     </ListPreference>
 
-    <Preference
-        android:title="@string/pref_btn_title"
-        android:key="@string/pref_btn_key">
-    </Preference>
 
 </PreferenceScreen>
