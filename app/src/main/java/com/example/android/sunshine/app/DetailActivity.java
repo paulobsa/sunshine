@@ -3,6 +3,8 @@ package com.example.android.sunshine.app;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ActionProvider;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,6 +16,8 @@ import android.widget.Toast;
 
 
 public class DetailActivity extends ActionBarActivity {
+
+    private ActionProvider mShareActionProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +47,19 @@ public class DetailActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.detail, menu);
+
+        /**
+        TODO
+        Tirar o shareActionProvider da biblioteca de compatibilidade e colocar a nativa
+        Locate MenuItem with ShareActionProvider
+        **/
+
+        MenuItem item = menu.findItem(R.id.item_share);
+
+        // Fetch and store ShareActionProvider
+        mShareActionProvider = MenuItemCompat.getActionProvider(item);
+
+
         return true;
     }
 

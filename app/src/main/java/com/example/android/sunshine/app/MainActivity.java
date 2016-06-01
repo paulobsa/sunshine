@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -22,6 +23,8 @@ public class MainActivity extends ActionBarActivity {
                     .add(R.id.container, new ForecastFragment())
                     .commit();
         }
+
+        Log.d("LIFECYCLE", "onCreate");
     }
 
     @Override
@@ -46,7 +49,6 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
     private void launchMap() {
         SharedPreferences sharedPrefs =
                 PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -70,6 +72,33 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
+    @Override
+    protected void onStop() {
+        Log.d("LIFECYCLE", "onStop");
+        super.onStop();
+    }
 
+    @Override
+    protected void onPause() {
+        Log.d("LIFECYCLE", "onPause");
+        super.onPause();
+    }
 
+    @Override
+    protected void onResume() {
+        Log.d("LIFECYCLE", "onResume");
+        super.onResume();
+    }
+
+    @Override
+    protected void onStart() {
+        Log.d("LIFECYCLE", "onStart");
+        super.onStart();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.d("LIFECYCLE", "onDestroy");
+        super.onDestroy();
+    }
 }
